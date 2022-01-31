@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from django.conf import settings
 from django.db import models
@@ -21,16 +22,20 @@ class UserProfile(models.Model):
     # address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
 
-class RenderHistory(models.Model):
+class JobsHistory(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    render_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    rendered_on = models.DateTimeField()
+    job_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    initiated_on = models.DateTimeField(default=datetime.now, blank=False)
+    obj_file = models.TextField(blank=True)
+    complete_status = models.IntegerField(default=0)
+    completed_on = models.DateTimeField(default=datetime.now, blank=True)
 
 
 class Files(models.Model):
-    file = models.FileField(upload_to="uploads/%Y/%m/%d/")
+    file = models.FileField(upload_to="uploads/%Y/%m/%d/", default='', blank=False)
 
 
-class RenderFiles(models.Model):
-    render = models.ForeignKey(RenderHistory, on_delete=models.CASCADE)
-    files = models.ManyToManyField(Files)
+class JobFiles(models.Model):
+    job_file = models.AutoField(primary_key=True)
+    job = models.ForeignKey(JobsHistory, on_delete=models.CASCADE)
+    files = models.ForeignKey(Files, on_delete=models.CASCADE, default='', blank=False)

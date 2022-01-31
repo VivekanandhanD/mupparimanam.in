@@ -1,8 +1,26 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="container-lg">
+<form action="{% url 'job-upload' %}" enctype="multipart/form-data" method="POST">
+    <div class="container-lg">
+        <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg" class="d-block w-100" alt="..."/>
+        <div class="row g-0 d-flex my-3">
 
-
-</div>
+            <div class="col-md mt-4">
+                <!--            <label class="form-label" for="customFile">Select Files</label>-->
+                <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(23).jpg" class="d-block w-100"
+                     alt="Select File"/>
+            </div>
+            <div class="col-md ms-3 my-4">
+                {% csrf_token %}
+                {{ form.file }}
+                <!--                <input type="file" class="form-control" id="files" />-->
+                <button type="submit"
+                        class="btn btn-success btn-rounded position-relative top-50 start-50 translate-middle h-50 w-50">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
 {% endblock %}

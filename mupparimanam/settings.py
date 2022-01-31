@@ -133,6 +133,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "web/static"),
 )
 
-MEDIA_ROOT = 'uploads/'
+MEDIA_ROOT = '.'
 
 # AUTH_USER_MODEL = 'web.User'

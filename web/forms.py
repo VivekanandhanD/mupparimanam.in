@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.forms import UserCreationForm
 
+from web.models import Files
+
 User = get_user_model()
 
 
@@ -28,6 +30,7 @@ class SignUpForm(UserCreationForm):
     def save(self, commit=True):
         user = super(SignUpForm, self).save(commit=False)
         user.email = self.cleaned_data["email"]
+        user.username = self.cleaned_data["email"]
         if commit:
             user.save()
         return user
@@ -37,5 +40,18 @@ class SignUpForm(UserCreationForm):
         fields = ('email',)
 
 
-class FileUploadForm:
-    file = forms.FileField()
+class FileUploadForm(forms.ModelForm):
+    file = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
+    )
+
+    def save(self, commit=True):
+        file = super(FileUploadForm, self).save(commit=False)
+        file.file = self.cleaned_data["file"]
+        if commit:
+            file.save()
+        return file
+
+    class Meta:
+        model = Files
+        fields = ('file',)

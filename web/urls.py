@@ -7,5 +7,5 @@ urlpatterns = [
     path('signup/', views.Signup.as_view(), name='signup'),
     path('login/', views.Signin.as_view(), name='login'),
     path('logout/', views.Signout.as_view(), name='logout'),
-    path('render-upload/', views.RenderUpload.as_view(), name='renderupload')
+    path('job-upload/', views.JobUpload.as_view(), name='job-upload')
 ]
