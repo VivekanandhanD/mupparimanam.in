@@ -1,7 +1,8 @@
-#upload-page-link{
-    background-image: url("/static/img/00.jpg");
-    background-color: #cccccc;
-    height: 500px;
+.half-5{
+    width: 50%;
+}
+.half-4{
+    width: 45%;
 }
 
 body {

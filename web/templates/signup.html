@@ -11,11 +11,11 @@
                 <div class="d-flex justify-content-start align-items-center mb-4">
                     <i class="far fa-user fa-lg text-white fa-fw me-3"></i>
                     <div class="form-outline form-white w-100">
-                        {{ form.username }}
+                        {{ form.email }}
     <!--                  <input type="text" id="form1Example1" class="form-control" />-->
-                      <label class="form-label" for="{{ form.username.id_for_label }}">Email Id</label>
-                        {% if form.username.errors %}
-                        <div class="form-helper text-black">{{ form.username.errors.0 }}</div>
+                      <label class="form-label" for="{{ form.email.id_for_label }}">Email Id</label>
+                        {% if form.email.errors %}
+                        <div class="form-helper text-black">{{ form.email.errors.0 }}</div>
                         {% endif %}
                     </div>
                     </div>

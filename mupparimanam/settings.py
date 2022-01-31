@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*', '192.168.0.5']
 
+LOGIN_URL = '/login'
+# LOGIN_REDIRECT_URL = '/'
 
 # Application definition
 
@@ -37,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'phonenumber_field',
     'web'
 ]
+
+# AUTHENTICATION_BACKENDS = ['AuthBackend']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,8 +81,12 @@ WSGI_APPLICATION = 'mupparimanam.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mupparimanam',
+        'USER': 'Vivek',
+        'PASSWORD': '',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 
@@ -123,3 +132,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "web/static"),
 )
+
+MEDIA_ROOT = 'uploads/'
+
+# AUTH_USER_MODEL = 'web.User'
