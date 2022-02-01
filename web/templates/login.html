@@ -5,7 +5,7 @@
 <section id="signup-body" class="mx-auto my-5" style="max-width: 23rem;">
     <form class="pb-5 px-2" _lpchecked="1" method="post">
         <div class="card card-form mt-2 mb-4">
-            <div class="card-body rounded-top pink darken-4">
+            <div class="card-body rounded-top pink darken-4 mb-3">
                 <h3 class="font-weight-bold text-center text-uppercase text-white my-4">Sign in</h3>
                 {% csrf_token %}
                 <div class="d-flex justify-content-start align-items-center mb-4">
@@ -33,10 +33,7 @@
                 <div class="card-body">
                     <button class="btn btn-outline-danger btn-rounded btn-block my-4 z-depth-0"
                       type="submit">Log in</button>
-                    <p>By clicking
-                      <em>Sign up</em> you agree to our
-                      <a class="pink-accent-text" href="#!" target="_blank">terms of service</a> and
-                      <a class="pink-accent-text" href="#!" target="_blank">terms of service</a>. </p>
+                    <p>New users <em><a href="/signup"> Sign up </a></em> here.</p>
                 </div>
             </div>
         </div>

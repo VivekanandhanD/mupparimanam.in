@@ -3,23 +3,89 @@
 {% block content %}
 <form action="{% url 'job-upload' %}" enctype="multipart/form-data" method="POST">
     <div class="container-lg">
-        <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg" class="d-block w-100" alt="..."/>
-        <div class="row g-0 d-flex my-3">
+        <!--        <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg" class="d-block w-100" alt="..."/>-->
+        <div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="3" class="active" aria-current="true" aria-label="Slide 4"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="4" class="active" aria-current="true" aria-label="Slide 5"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="5" class="active" aria-current="true" aria-label="Slide 6"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="6" class="active" aria-current="true" aria-label="Slide 7"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="7" class="active" aria-current="true" aria-label="Slide 8"></button>
+            </div>
+            <!-- Inner -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'img/me1.jpg' %}" class="d-block w-100" alt="..."/>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/M1.jpg' %}" class="d-block w-100" alt="..."/>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/M2.jpg' %}" class="d-block w-100" alt="..."/>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/G1.jpg' %}" class="d-block w-100" alt="..."/>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/V1.jpg' %}" class="d-block w-100" alt="..."/>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/V2.jpg' %}" class="d-block w-100" alt="..."/>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/V3.jpg' %}" class="d-block w-100" alt="..."/>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/V4.jpg' %}" class="d-block w-100" alt="..."/>
+                </div>
+            </div>
+            <!-- Inner -->
 
+            <!-- Controls -->
+            <button
+                    class="carousel-control-prev"
+                    type="button"
+                    data-mdb-target="#carouselBasicExample"
+                    data-mdb-slide="prev"
+            >
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+                    class="carousel-control-next"
+                    type="button"
+                    data-mdb-target="#carouselBasicExample"
+                    data-mdb-slide="next"
+            >
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <div class="row g-0 d-flex my-3">
             <div class="col-md mt-4">
                 <!--            <label class="form-label" for="customFile">Select Files</label>-->
-                <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(23).jpg" class="d-block w-100"
-                     alt="Select File"/>
+                <img src="{% static 'img/tut.jpg' %}" class="d-block w-100" alt="Remove background and leave it to white, before upload your image."/>
             </div>
             <div class="col-md ms-3 my-4">
                 {% csrf_token %}
                 {{ form.file }}
-                <!--                <input type="file" class="form-control" id="files" />-->
+<!--                <img src="" class="d-block w-100 position-relative" alt="Preview"/>-->
                 <button type="submit"
                         class="btn btn-success btn-rounded position-relative top-50 start-50 translate-middle h-50 w-50">
                     Submit
                 </button>
             </div>
+        </div>
+        <div class="row g-0 d-flex my-3">
+                <p>Once uploaded to the server, the image will be processed using opensource software
+                    <a href="https://shunsukesaito.github.io/PIFuHD/">PIFuHD</a> and the ouput .OBJ file will be ready
+                    to download in the notification center. Current waiting period 60 mins.</p>
+            <img src="https://shunsukesaito.github.io/PIFuHD/resources/images/pifuhd.gif" class="d-block w-100 position-relative"/>
         </div>
     </div>
 </form>
