@@ -28,6 +28,9 @@
                         {% endif %}
                     </div>
                 </div>
+                {% for msg in messages %}
+                    <div class="form-helper text-white">{{ msg }}</div>
+                {% endfor %}
             </div>
             <div class="card card-form-2 mb-0 z-depth-0">
                 <div class="card-body">

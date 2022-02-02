@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 # from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import CharField, DateField, Func, F, Value
@@ -44,6 +45,7 @@ class Signin(View):
             return redirect(next_page)
         else:
             form = CustomAuthForm()
+            messages.error(request, 'Email Id / Password did not match.')
             return render(request, 'login.html', {'form': form})
 
     def get(self, request):
