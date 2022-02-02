@@ -66,7 +66,7 @@ class JobUpload(View):
     success_template_name = "render-upload.html"
 
     def get(self, request):
-        jobs = JobsHistory.objects.filter(user=request.user).count()
+        jobs = JobsHistory.objects.filter(user=request.user, remove_status=Value(0)).count()
         if jobs > 4:
             messages.error(request, 'Quota exhausted, please clear some files before upload new picture.')
             return redirect("job-history")
