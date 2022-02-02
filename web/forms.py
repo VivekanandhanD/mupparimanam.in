@@ -1,10 +1,18 @@
 from django import forms
 from django.contrib.auth import get_user_model, password_validation
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 
 from web.models import Files
 
 User = get_user_model()
+
+
+class CustomAuthForm(AuthenticationForm):
+    # username = forms.CharField(widget=forms.TextInput(attrs={'class':'validate','placeholder': 'Email'}))
+    username = UsernameField(widget=forms.TextInput(attrs={'autofocus': True, 'class': 'form-control'}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class': 'form-control'})
+    )
 
 
 class SignUpForm(UserCreationForm):

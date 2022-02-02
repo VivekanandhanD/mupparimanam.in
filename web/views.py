@@ -1,11 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+# from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views import View
 
-from web.forms import SignUpForm, FileUploadForm
+from web.forms import SignUpForm, FileUploadForm, CustomAuthForm
 from web.models import JobsHistory, JobFiles
 
 
@@ -41,11 +41,11 @@ class Signin(View):
             login(request, user)
             return redirect(next_page)
         else:
-            form = AuthenticationForm()
+            form = CustomAuthForm()
             return render(request, 'login.html', {'form': form})
 
     def get(self, request):
-        form = AuthenticationForm()
+        form = CustomAuthForm()
         return render(request, 'login.html', {'form': form})
 
 
