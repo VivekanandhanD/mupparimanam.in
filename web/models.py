@@ -29,6 +29,7 @@ class JobsHistory(models.Model):
     obj_file = models.TextField(blank=True)
     complete_status = models.IntegerField(default=0)
     completed_on = models.DateTimeField(default=datetime.now, blank=True)
+    remove_status = models.IntegerField(default=0)
 
 
 class Files(models.Model):

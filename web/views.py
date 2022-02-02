@@ -66,6 +66,10 @@ class JobUpload(View):
     success_template_name = "render-upload.html"
 
     def get(self, request):
+        jobs = JobsHistory.objects.filter(user=request.user).count()
+        if jobs > 4:
+            messages.error(request, 'Quota exhausted, please clear some files before upload new picture.')
+            return redirect("job-history")
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
@@ -82,10 +86,18 @@ class JobUpload(View):
 
 @method_decorator(login_required, name='dispatch')
 class JobHistory(View):
-    template_name = "render-upload.html"
+    template_name = "job-history.html"
 
     def get(self, request):
         user = request.user
-        job_list = JobsHistory.objects.filter(user=user).values(
-            'initiated_on', 'jobfiles__files__file', 'complete_status', 'obj_file').order_by('initiated_on')
-        return render(request, 'job-history.html', {'list': job_list})
+        job_list = JobsHistory.objects.filter(user=user, remove_status=Value(0)).values(
+            'job_id', 'initiated_on', 'jobfiles__files__file', 'complete_status', 'obj_file', 'remove_status')\
+            .order_by('-initiated_on')
+        return render(request, self.template_name, {'list': job_list})
+
+    def post(self, request):
+        job_id = request.POST["job-id"]
+        job = JobsHistory.objects.get(user=request.user, job_id=job_id)
+        job.remove_status = 1
+        job.save()
+        return redirect("job-history")
