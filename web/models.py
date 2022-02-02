@@ -17,7 +17,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class UserProfile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    profile_pic = models.FileField(upload_to='uploads/%Y/%m/%d/', blank=True)
+    profile_pic = models.FileField(upload_to='web/static/dp/%Y/%m/%d/', blank=True)
     mobile_no = PhoneNumberField()
     # address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
@@ -32,7 +32,7 @@ class JobsHistory(models.Model):
 
 
 class Files(models.Model):
-    file = models.FileField(upload_to="uploads/%Y/%m/%d/", default='', blank=False)
+    file = models.FileField(upload_to="web/static/uploads/%Y/%m/%d/", default='', blank=False)
 
 
 class JobFiles(models.Model):

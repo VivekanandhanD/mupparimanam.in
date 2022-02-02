@@ -7,5 +7,6 @@ urlpatterns = [
     path('signup/', views.Signup.as_view(), name='signup'),
     path('login/', views.Signin.as_view(), name='login'),
     path('logout/', views.Signout.as_view(), name='logout'),
-    path('job-upload/', views.JobUpload.as_view(), name='job-upload')
+    path('job-upload/', views.JobUpload.as_view(), name='job-upload'),
+    path('job-history/', views.JobHistory.as_view(), name='job-history')
 ]
