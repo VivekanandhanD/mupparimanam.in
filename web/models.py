@@ -27,7 +27,7 @@ class JobsHistory(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     job_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     initiated_on = models.DateTimeField(default=datetime.now, blank=False)
-    obj_file = models.TextField(blank=True)
+    obj_file = models.FileField(upload_to="web/static/outputs/%Y/%m/%d/", blank=False, default='')
     complete_status = models.IntegerField(default=0)
     completed_on = models.DateTimeField(default=datetime.now, blank=True)
     remove_status = models.IntegerField(default=0)

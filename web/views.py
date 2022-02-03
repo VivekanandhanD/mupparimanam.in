@@ -1,16 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.forms import AuthenticationForm
-from django.db.models import CharField, DateField, Func, F, Value
-from django.db.models.functions import TruncDate
+from django.db.models import Value
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files import File
 
 from web.forms import SignUpForm, FileUploadForm, CustomAuthForm
 from web.models import JobsHistory, JobFiles
+
+from uuid import UUID
 
 
 def index(request):
@@ -114,9 +116,38 @@ def get_jobs(request):
                 'job_id', 'jobfiles__files__file'
             )
             result = list(job_list)
-            # job_list.update(complete_status=Value(1))
+            job_list.update(complete_status=Value(1))
             return JsonResponse(result, safe=False)
         else:
             return HttpResponse("No")
     else:
         return HttpResponse("Fuck you")
+
+
+@csrf_exempt
+def upload_jobs(request):
+    if request.method == 'POST':
+        key = request.POST['k']
+        if key == 'ardu':
+            files = request.FILES
+            for name in files:
+                file = File(files[name], name=name)
+                job_id = name.replace(".obj", "")
+                job_id = UUID(job_id)
+                job = JobsHistory.objects.get(job_id=job_id)
+                job.obj_file = file
+                job.complete_status = Value(2)
+                job.save()
+            return HttpResponse("Success")
+        else:
+            return HttpResponse("No")
+    else:
+        return HttpResponse("Fuck you")
+
+
+def token(request):
+    if request.method == 'GET':
+        key = request.GET['k']
+        if key == 'ardu':
+            return render(request, 'token.html')
+    return HttpResponse("Fuck you")
