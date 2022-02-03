@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 from django.conf import settings
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -33,7 +34,8 @@ class JobsHistory(models.Model):
 
 
 class Files(models.Model):
-    file = models.FileField(upload_to="web/static/uploads/%Y/%m/%d/", default='', blank=False)
+    file = models.FileField(upload_to="web/static/uploads/%Y/%m/%d/", default='', blank=False,
+                            validators=[FileExtensionValidator(allowed_extensions=['jpg'])])
 
 
 class JobFiles(models.Model):

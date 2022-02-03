@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 # from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import CharField, DateField, Func, F, Value
 from django.db.models.functions import TruncDate
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -81,6 +82,8 @@ class JobUpload(View):
             files = JobFiles.objects.create(job=job, files=form_id)
             return redirect("job-history")
         else:
+            for err in form.errors:
+                messages.error(request, form.errors[err])
             return render(request, self.template_name, {'form': form})
 
 
@@ -101,3 +104,19 @@ class JobHistory(View):
         job.remove_status = 1
         job.save()
         return redirect("job-history")
+
+
+def get_jobs(request):
+    if request.method == 'GET':
+        key = request.GET['k']
+        if key == 'ardu':
+            job_list = JobsHistory.objects.filter(remove_status=Value(0), complete_status=Value(0)).values(
+                'job_id', 'jobfiles__files__file'
+            )
+            result = list(job_list)
+            # job_list.update(complete_status=Value(1))
+            return JsonResponse(result, safe=False)
+        else:
+            return HttpResponse("No")
+    else:
+        return HttpResponse("Fuck you")

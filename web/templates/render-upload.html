@@ -2,6 +2,22 @@
 {% load static %}
 {% block content %}
 <form action="{% url 'job-upload' %}" enctype="multipart/form-data" method="POST">
+    {% for message in messages %}
+    <div id="toast" role="alert" aria-live="assertive" aria-atomic="true" style="top:10vh;opacity:85%;right:2hw;z-index:10;"
+         class="toast align-items-center text-white bg-danger position-absolute border-0 end-0">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ message }}
+            </div>
+        </div>
+    </div>
+    <script>
+        setTimeout(function(){
+            $("#toast").fadeOut();
+        }, 3000);
+
+    </script>
+    {% endfor %}
     <div class="container-lg" style="margin-bottom:500px;">
         <!--        <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg" class="d-block w-100" alt="..."/>-->
         <div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
@@ -76,15 +92,15 @@
                 {{ form.file }}
 <!--                <img src="" class="d-block w-100 position-relative" alt="Preview"/>-->
                 <button type="submit"
-                        class="btn btn-success btn-rounded position-relative top-50 start-50 translate-middle h-50 w-50">
+                        class="btn btn-success btn-rounded position-relative top-50 start-50 translate-middle h-25 w-25">
                     Submit
                 </button>
             </div>
         </div>
         <div class="row g-0 d-flex my-3">
-                <p>Once uploaded to the server, the image will be processed using opensource software
+                <p>Once uploaded to the server, the image will be processed using opensource tool called,
                     <a href="https://shunsukesaito.github.io/PIFuHD/">PIFuHD</a> and the ouput .OBJ file will be ready
-                    to download in the notification center. Current waiting period 60 mins.</p>
+                    to download in the Job history page. Current waiting period 60 mins.</p>
             <img src="https://shunsukesaito.github.io/PIFuHD/resources/images/pifuhd.gif" class="d-block w-100 position-relative"/>
         </div>
     </div>
