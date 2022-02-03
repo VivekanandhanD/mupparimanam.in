@@ -69,7 +69,7 @@
                 {% else %}
                 <td></td>
                 {% endif %}
-                {% if row.complete_status == 2 %}
+                {% if row.complete_status == 2 or row.complete_status == 0 %}
                 <td style="text-align:center;">
                     <button type="button" class="btn btn-danger btn-floating" onclick="removeJob('{{ row.job_id }}')">
                         <i class="fas fa-trash"></i>
