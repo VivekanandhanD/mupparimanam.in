@@ -114,6 +114,9 @@ def get_jobs(request):
     if request.method == 'GET':
         key = request.GET['k']
         if key == 'ardu':
+            JobsHistory.objects.filter(remove_status=Value(0), complete_status=Value(1)).update(
+                complete_status=Value(3)
+            )
             job_list = JobsHistory.objects.filter(remove_status=Value(0), complete_status=Value(0)).values(
                 'job_id', 'jobfiles__files__file'
             )
