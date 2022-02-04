@@ -107,12 +107,12 @@ class JobHistory(View):
     def post(self, request):
         job_id = request.POST["job-id"]
         file = Files.objects.get(jobfiles__job_id=job_id)
-        if file.file.name is not '':
+        if file.file.name != '':
             delete_file(file.file.url)
         file.delete()
         job = JobsHistory.objects.get(user=request.user, job_id=job_id)
         # job.remove_status = 1
-        if job.obj_file.name is not '':
+        if job.obj_file.name != '':
             delete_file(job.obj_file.url)
         job.delete()
         return redirect("job-history")
