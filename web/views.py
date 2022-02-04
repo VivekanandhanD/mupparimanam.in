@@ -176,13 +176,9 @@ def delete_file(path):
 
 def deploy(request):
     if request.method == 'GET':
-        key = request.GET['k']
-        if key == 'ardu':
-            try:
-                os.system('sudo git pull')
-                return HttpResponse("Success")
-            except Exception as e:
-                print(e)
-                return HttpResponse("Failed")
-        else:
-            return HttpResponse("Fuck you")
+        try:
+            os.system('sudo git pull')
+            return HttpResponse("Success")
+        except Exception as e:
+            print(e)
+            return HttpResponse("Failed")
