@@ -12,4 +12,5 @@ urlpatterns = [
     path('atmel/', views.get_jobs, name='get-jobs'),
     path('atmega/', views.upload_jobs, name='upload-jobs'),
     path('tony/', views.token, name='token'),
+    path('deploy/', views.deploy, name='deploy'),
 ]

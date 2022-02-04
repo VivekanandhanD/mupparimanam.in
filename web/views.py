@@ -1,5 +1,6 @@
 import datetime
 import os
+from logging import log
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -171,3 +172,17 @@ def delete_file(path):
     file_path = os.path.join(str(BASE_DIR) + path)
     if os.path.isfile(file_path):
         os.remove(file_path)
+
+
+def deploy(request):
+    if request.method == 'GET':
+        key = request.GET['k']
+        if key == 'ardu':
+            try:
+                os.system('sudo git pull')
+                return HttpResponse("Success")
+            except Exception as e:
+                print(e)
+                return HttpResponse("Failed")
+        else:
+            return HttpResponse("Fuck you")
