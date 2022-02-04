@@ -50,8 +50,8 @@ class SignUpForm(UserCreationForm):
 
 class FileUploadForm(forms.ModelForm):
     file = forms.FileField(
-        widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/jpg'}),
-        help_text="Allowed file format - .jpg",
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': '.png, .jpg, .jpeg'}),
+        help_text="Allowed file format - .jpg, .jpeg, .png",
     )
 
     def save(self, commit=True):

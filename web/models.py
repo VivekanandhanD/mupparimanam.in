@@ -35,7 +35,7 @@ class JobsHistory(models.Model):
 
 class Files(models.Model):
     file = models.FileField(upload_to="web/static/uploads/%Y/%m/%d/", default='', blank=False,
-                            validators=[FileExtensionValidator(allowed_extensions=['jpg'])])
+                            validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])])
 
 
 class JobFiles(models.Model):
