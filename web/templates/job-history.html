@@ -59,6 +59,11 @@
                     Completed
                     <i class="far fa-check-circle fa-2x float-end"></i>
                 </td>
+                {% elif row.complete_status == 3 %}
+                <td class="completed table-danger">
+                    Failed
+                    <i class="far fa-check-circle fa-2x float-end"></i>
+                </td>
                 {% endif %}
                 {% if row.complete_status == 2 %}
                 <td style="text-align:center;">
@@ -69,7 +74,7 @@
                 {% else %}
                 <td></td>
                 {% endif %}
-                {% if row.complete_status == 2 or row.complete_status == 0 %}
+                {% if row.complete_status != 1 %}
                 <td style="text-align:center;">
                     <button type="button" class="btn btn-danger btn-floating" onclick="removeJob('{{ row.job_id }}')">
                         <i class="fas fa-trash"></i>
