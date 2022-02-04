@@ -81,13 +81,38 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
+        <div class="row g-0 d-flex my-3">
+            <div class="col-md-5 col-lg-5 col-xs-5 mt-4">
+                <h5>Steps to be followed for best results:</h5>
+                <ul>
+                    <li>Take a portrait picture with whole body visible</li>
+                        <ul>
+                            <li>Cropped image don't give proper result</li>
+                        </ul>
+                    <li>Remove background</li>
+                        <ul>
+                            <li>Use photoshop or any suitable apps</li>
+                            <li>Leaving the background white will give best result</li>
+                        </ul>
+                    <li>Medium quality is recommended</li>
+                        <ul>
+                            <li>No need for high quality image</li>
+                            <li>image size not more than 1MB is recommended</li>
+                            <li>.jpg, .jpeg, .png are the accepted file formats</li>
+                        </ul>
+                </ul>
+            </div>
+            <div class="col-md-5 col-lg-5 col-xs-5 mt-4">
+                <img src="{% static 'img/3M.jpg' %}" class="d-block w-100" alt="image."/>
+            </div>
+        </div>
 
         <div class="row g-0 d-flex my-3">
             <div class="col-md mt-4">
                 <!--            <label class="form-label" for="customFile">Select Files</label>-->
                 <img src="{% static 'img/tut.jpg' %}" class="d-block w-100" alt="Remove background and leave it to white, before upload your image."/>
             </div>
-            <div class="col-md ms-3 my-4">
+            <div class="col-md ms-3 my-5">
                 {% csrf_token %}
                 {{ form.file }}
 <!--                <img src="" class="d-block w-100 position-relative" alt="Preview"/>-->
