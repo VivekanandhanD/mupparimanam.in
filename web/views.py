@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Value
@@ -137,6 +139,7 @@ def upload_jobs(request):
                 job = JobsHistory.objects.get(job_id=job_id)
                 job.obj_file = file
                 job.complete_status = Value(2)
+                job.completed_on = datetime.datetime.now()
                 job.save()
             return HttpResponse("Success")
         else:
