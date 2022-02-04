@@ -98,7 +98,7 @@ class JobHistory(View):
     def get(self, request):
         user = request.user
         job_list = JobsHistory.objects.filter(user=user, remove_status=Value(0)).values(
-            'job_id', 'initiated_on', 'jobfiles__files__file', 'complete_status', 'obj_file', 'remove_status')\
+            'job_id', 'jobfiles__files__file', 'complete_status', 'obj_file', 'remove_status')\
             .order_by('-initiated_on')
         return render(request, self.template_name, {'list': job_list})
 
