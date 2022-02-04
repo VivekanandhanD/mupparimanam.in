@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -11,8 +12,9 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files import File
 
+from mupparimanam.settings import BASE_DIR
 from web.forms import SignUpForm, FileUploadForm, CustomAuthForm
-from web.models import JobsHistory, JobFiles
+from web.models import JobsHistory, JobFiles, Files
 
 from uuid import UUID
 
@@ -104,9 +106,15 @@ class JobHistory(View):
 
     def post(self, request):
         job_id = request.POST["job-id"]
+        file = Files.objects.get(jobfiles__job_id=job_id)
+        if file.file.name is not '':
+            delete_file(file.file.url)
+        file.delete()
         job = JobsHistory.objects.get(user=request.user, job_id=job_id)
-        job.remove_status = 1
-        job.save()
+        # job.remove_status = 1
+        if job.obj_file.name is not '':
+            delete_file(job.obj_file.url)
+        job.delete()
         return redirect("job-history")
 
 
@@ -157,3 +165,9 @@ def token(request):
         if key == 'ardu':
             return render(request, 'token.html')
     return HttpResponse("Fuck you")
+
+
+def delete_file(path):
+    file_path = os.path.join(str(BASE_DIR) + path)
+    if os.path.isfile(file_path):
+        os.remove(file_path)
