@@ -108,11 +108,11 @@
         </div>
 
         <div class="row g-0 d-flex my-3">
-            <div class="col-md mt-4">
+            <div class="col-md mt-4 me-4">
                 <!--            <label class="form-label" for="customFile">Select Files</label>-->
                 <img src="{% static 'img/tut.jpg' %}" class="d-block w-100" alt="Remove background and leave it to white, before upload your image."/>
             </div>
-            <div class="col-md ms-3 my-5">
+            <div class="col-md my-5">
                 {% csrf_token %}
                 {{ form.file }}
 <!--                <img src="" class="d-block w-100 position-relative" alt="Preview"/>-->
