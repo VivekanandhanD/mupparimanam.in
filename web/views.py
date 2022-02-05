@@ -141,7 +141,7 @@ class AdminPage(View):
     def get(self, request):
         user_list = User.objects.exclude(id=Value(1)).values(
             'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id'))\
-            .order_by('-id')
+            .order_by('-id')[:10]
         return render(request, self.template_name, {'list': user_list})
 
     def post(self, request):
