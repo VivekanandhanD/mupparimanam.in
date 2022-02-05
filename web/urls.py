@@ -13,4 +13,5 @@ urlpatterns = [
     path('atmega/', views.upload_jobs, name='upload-jobs'),
     path('tony/', views.token, name='token'),
     path('cronus/', views.deploy, name='deploy'),
+    path('sunday/', views.AdminPage.as_view(), name='admin-page'),
 ]

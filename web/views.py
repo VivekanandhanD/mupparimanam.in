@@ -3,8 +3,9 @@ import os
 from logging import log
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.db.models import Value
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.db.models import Value, Count
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
@@ -12,12 +13,25 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files import File
+from django.contrib.auth.decorators import user_passes_test
 
 from mupparimanam.settings import BASE_DIR
 from web.forms import SignUpForm, FileUploadForm, CustomAuthForm
 from web.models import JobsHistory, JobFiles, Files
 
 from uuid import UUID
+
+User = get_user_model()
+
+
+def superuser_required():
+    def wrapper(wrapped):
+        class WrappedClass(UserPassesTestMixin, wrapped):
+            def test_func(self):
+                return self.request.user.is_superuser
+
+        return WrappedClass
+    return wrapper
 
 
 def index(request):
@@ -104,6 +118,31 @@ class JobHistory(View):
             'job_id', 'jobfiles__files__file', 'complete_status', 'obj_file', 'remove_status')\
             .order_by('-initiated_on')
         return render(request, self.template_name, {'list': job_list})
+
+    def post(self, request):
+        job_id = request.POST["job-id"]
+        file = Files.objects.get(jobfiles__job_id=job_id)
+        if file.file.name != '':
+            delete_file(file.file.url)
+        file.delete()
+        job = JobsHistory.objects.get(user=request.user, job_id=job_id)
+        # job.remove_status = 1
+        if job.obj_file.name != '':
+            delete_file(job.obj_file.url)
+        job.delete()
+        return redirect("job-history")
+
+
+@method_decorator(login_required, name='dispatch')
+@superuser_required()
+class AdminPage(View):
+    template_name = "admin-page.html"
+
+    def get(self, request):
+        user_list = User.objects.exclude(id=Value(1)).values(
+            'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id'))\
+            .order_by('-id')
+        return render(request, self.template_name, {'list': user_list})
 
     def post(self, request):
         job_id = request.POST["job-id"]
