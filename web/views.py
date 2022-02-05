@@ -126,7 +126,6 @@ class JobHistory(View):
             delete_file(file.file.url)
         file.delete()
         job = JobsHistory.objects.get(user=request.user, job_id=job_id)
-        # job.remove_status = 1
         if job.obj_file.name != '':
             delete_file(job.obj_file.url)
         job.delete()
@@ -139,10 +138,44 @@ class AdminPage(View):
     template_name = "admin-page.html"
 
     def get(self, request):
-        user_list = User.objects.exclude(id=Value(1)).values(
-            'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id'))\
-            .order_by('-id')[:10]
-        return render(request, self.template_name, {'list': user_list})
+        is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+        if is_ajax:
+            column = ['id', 'email', 'date_joined', 'count']
+            start = int(request.GET['start'])
+            length = int(request.GET['length'])
+            column_id = int(request.GET['order[0][column]'][0])
+            order_dir = request.GET['order[0][dir]']
+            order_by = column[column_id]
+            draw = int(request.GET['draw'])
+            if column_id == 0 and order_dir == 'asc':
+                order_by = '-' + order_by
+            elif order_dir == 'desc':
+                if column_id > 0:
+                    order_by = '-' + order_by
+            if start > 0:
+                length += start
+            user_list = User.objects.exclude(id=Value(1)).values(
+                'id', 'email', 'date_joined').annotate(count=Count('jobshistory__job_id')) \
+                            .order_by(order_by)[start:length]
+            user_list = list(user_list)
+            records_total = User.objects.exclude(id=Value(1)).values(
+                'id', 'email', 'date_joined').annotate(count=Count('jobshistory__job_id')).order_by(order_by).count()
+            # if draw == 1:
+            records_filtered = records_total
+            # else:
+            #     records_filtered = len(user_list)
+            result = {
+                'data': user_list,
+                'draw': draw,
+                'recordsTotal': records_total,
+                'recordsFiltered': records_filtered
+            }
+            return JsonResponse(result, safe=False)
+        else:
+            user_list = User.objects.exclude(id=Value(1)).values(
+                'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id'))\
+                .order_by('-id')[:10]
+            return render(request, self.template_name, {'list': user_list})
 
     def post(self, request):
         job_id = request.POST["job-id"]

@@ -29,6 +29,18 @@
                     <th scope="col">Functions</th>
                 </tr>
             </thead>
+            <tbody>
+            {% for row in list %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.email }}</td>
+                <td>{{ row.date_joined }}</td>
+                <td>{{ row.jobshistory__job_id__count }}</td>
+                <td style="text-align:center;">
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
 </div>
@@ -52,5 +64,11 @@
         </div>
     </form>
 </div>
+<script>
+    function removeJob(jobId){
+        $("#job-id").val(jobId);
+        $("#confirm").modal("show");
+    }
+</script>
 <script src="{% static 'js/admin.js' %}"></script>
 {% endblock %}
