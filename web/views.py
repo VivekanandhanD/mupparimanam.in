@@ -128,7 +128,7 @@ def get_jobs(request):
             )
             job_list = JobsHistory.objects.filter(remove_status=Value(0), complete_status=Value(0)).values(
                 'job_id', 'jobfiles__files__file'
-            )
+            ).order_by('initiated_on')[:5]
             result = list(job_list)
             job_list.update(complete_status=Value(1))
             return JsonResponse(result, safe=False)
