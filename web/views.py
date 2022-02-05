@@ -128,9 +128,10 @@ def get_jobs(request):
             )
             job_list = JobsHistory.objects.filter(remove_status=Value(0), complete_status=Value(0)).values(
                 'job_id', 'jobfiles__files__file'
-            )
+            ).order_by('initiated_on')[:1]
             result = list(job_list)
-            job_list.update(complete_status=Value(1))
+            if len(result):
+                JobsHistory.objects.filter(job_id=job_list[0]['job_id']).update(complete_status=Value(1))
             return JsonResponse(result, safe=False)
         else:
             return HttpResponse("No")
