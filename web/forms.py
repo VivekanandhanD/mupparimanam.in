@@ -1,10 +1,17 @@
 from django import forms
 from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.core.exceptions import ValidationError
 
 from web.models import Files
 
 User = get_user_model()
+
+
+def file_size(file):
+    limit = 1 * 1024 * 1024
+    if file.size > limit:
+        raise ValidationError("File too large. size should not exceed 1MB.")
 
 
 class CustomAuthForm(AuthenticationForm):
@@ -52,6 +59,7 @@ class FileUploadForm(forms.ModelForm):
     file = forms.FileField(
         widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': '.png, .jpg, .jpeg'}),
         help_text="Allowed file format - .jpg, .jpeg, .png",
+        validators=[file_size]
     )
 
     def save(self, commit=True):
