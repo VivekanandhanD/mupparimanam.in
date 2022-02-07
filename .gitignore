@@ -14,3 +14,4 @@ mupparimanam/settings.py
 *.pyc
 mupparimanam/__pycache__/settings.cpython-39.pyc
 web/__pycache__/urls.cpython-39.pyc
+*.pyc
