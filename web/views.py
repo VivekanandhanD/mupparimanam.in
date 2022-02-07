@@ -5,7 +5,8 @@ from logging import log
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.db.models import Value, Count
+from django.db.models import Value, Count, Q, CharField
+from django.db.models.functions import Concat
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
@@ -31,6 +32,7 @@ def superuser_required():
                 return self.request.user.is_superuser
 
         return WrappedClass
+
     return wrapper
 
 
@@ -115,7 +117,7 @@ class JobHistory(View):
     def get(self, request):
         user = request.user
         job_list = JobsHistory.objects.filter(user=user, remove_status=Value(0)).values(
-            'job_id', 'jobfiles__files__file', 'complete_status', 'obj_file', 'remove_status')\
+            'job_id', 'jobfiles__files__file', 'complete_status', 'obj_file', 'remove_status') \
             .order_by('-initiated_on')
         return render(request, self.template_name, {'list': job_list})
 
@@ -155,8 +157,15 @@ class AdminPage(View):
             if start > 0:
                 length += start
             user_list = User.objects.exclude(id=Value(1)).values(
-                'id', 'email', 'date_joined').annotate(count=Count('jobshistory__job_id')) \
-                            .order_by(order_by)[start:length]
+                'id', 'email', 'date_joined').annotate(
+                count=Count('jobshistory__job_id'),
+                pending=Count('jobshistory__job_id', filter=Q(jobshistory__complete_status=Value(0))),
+                inprogress=Count('jobshistory__job_id', filter=Q(jobshistory__complete_status=Value(1))),
+                completed=Count('jobshistory__job_id', filter=Q(jobshistory__complete_status=Value(2))),
+                failed=Count('jobshistory__job_id', filter=Q(jobshistory__complete_status=Value(3))),
+                jobs=Concat('pending', Value(", "), 'inprogress', Value(", "), 'completed', Value(", "), 'failed',
+                            output_field=CharField())
+            ).order_by(order_by)[start:length]
             user_list = list(user_list)
             records_total = User.objects.exclude(id=Value(1)).values(
                 'id', 'email', 'date_joined').annotate(count=Count('jobshistory__job_id')).order_by(order_by).count()
@@ -173,8 +182,8 @@ class AdminPage(View):
             return JsonResponse(result, safe=False)
         else:
             user_list = User.objects.exclude(id=Value(1)).values(
-                'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id'))\
-                .order_by('-id')[:10]
+                'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id')) \
+                            .order_by('-id')[:10]
             return render(request, self.template_name, {'list': user_list})
 
     def post(self, request):
