@@ -181,10 +181,11 @@ class AdminPage(View):
             }
             return JsonResponse(result, safe=False)
         else:
-            user_list = User.objects.exclude(id=Value(1)).values(
-                'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id')) \
-                            .order_by('-id')[:10]
-            return render(request, self.template_name, {'list': user_list})
+            # user_list = User.objects.exclude(id=Value(1)).values(
+            #     'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id')) \
+            #                 .order_by('-id')[:10]
+            # return render(request, self.template_name, {'list': user_list})
+            return render(request, self.template_name)
 
     def post(self, request):
         job_id = request.POST["job-id"]
