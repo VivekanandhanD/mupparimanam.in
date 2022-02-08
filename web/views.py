@@ -167,8 +167,7 @@ class AdminPage(View):
                             output_field=CharField())
             ).order_by(order_by)[start:length]
             user_list = list(user_list)
-            records_total = User.objects.exclude(id=Value(1)).values(
-                'id', 'email', 'date_joined').annotate(count=Count('jobshistory__job_id')).order_by(order_by).count()
+            records_total = User.objects.exclude(id=Value(1)).all().count()
             # if draw == 1:
             records_filtered = records_total
             # else:
@@ -181,11 +180,14 @@ class AdminPage(View):
             }
             return JsonResponse(result, safe=False)
         else:
-            # user_list = User.objects.exclude(id=Value(1)).values(
-            #     'id', 'email', 'date_joined').annotate(Count('jobshistory__job_id')) \
-            #                 .order_by('-id')[:10]
-            # return render(request, self.template_name, {'list': user_list})
-            return render(request, self.template_name)
+            jobs = JobsHistory.objects.exclude(user_id=Value(1)).aggregate(
+                Pending=Count('job_id', filter=Q(complete_status=Value(0))),
+                Completed=Count('job_id', filter=Q(complete_status=Value(2))),
+                Failed=Count('job_id', filter=Q(complete_status=Value(3))),
+            )
+            user_count = User.objects.exclude(id=Value(1)).all().count()
+            return render(request, self.template_name, {'jobs': jobs, 'users': user_count})
+            # return render(request, self.template_name)
 
     def post(self, request):
         job_id = request.POST["job-id"]
