@@ -263,7 +263,7 @@ def deploy(request):
     if request.method == 'GET':
         try:
             os.system('sudo git pull')
-            os.system('sudo systemctl restart mupparimanam.service')
+            os.system('sudo service mupparimanam restart')
             return HttpResponse("Success")
         except Exception as e:
             print(e)
