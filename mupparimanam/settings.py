@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '2+neo%3twv41kizq%bh3w59&rjpye5=h!6d!6bscm18wt@w19a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 DATA_UPLOAD_MAX_MEMORY_SIZE = 262144000
 
 ALLOWED_HOSTS = ['*', '192.168.0.5', '3.128.89.70']
@@ -41,10 +41,23 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'phonenumber_field',
-    'web'
+    'web',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.instagram',
 ]
 
 # AUTHENTICATION_BACKENDS = ['AuthBackend']
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -85,8 +98,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mupparimanam',
         'USER': 'Vivek',
-        'PASSWORD': 'Keviv07!@',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PASSWORD': '',
+        'HOST': '3.128.89.70',
+        # 'HOST': 'localhost',
         'PORT': '3306',
     }
 }
@@ -137,3 +151,16 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = '.'
 
 # AUTH_USER_MODEL = 'web.User'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '309009608522-jinko5nu2jclqqtsnifg63qvg9pu88rs.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}
