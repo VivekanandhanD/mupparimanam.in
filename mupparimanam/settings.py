@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '2+neo%3twv41kizq%bh3w59&rjpye5=h!6d!6bscm18wt@w19a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 DATA_UPLOAD_MAX_MEMORY_SIZE = 262144000
 
 ALLOWED_HOSTS = ['*', '192.168.0.5', '3.128.89.70']
@@ -98,7 +98,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mupparimanam',
         'USER': 'Vivek',
-        'PASSWORD': '',
+        'PASSWORD': 'Keviv07!@',
         # 'HOST': '3.128.89.70',
         'HOST': 'localhost',
         'PORT': '3306',
