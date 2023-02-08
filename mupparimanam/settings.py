@@ -99,8 +99,8 @@ DATABASES = {
         'NAME': 'mupparimanam',
         'USER': 'Vivek',
         'PASSWORD': '',
-        'HOST': '3.128.89.70',
-        # 'HOST': 'localhost',
+        # 'HOST': '3.128.89.70',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
